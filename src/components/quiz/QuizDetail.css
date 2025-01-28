@@ -1,0 +1,66 @@
+/* src/components/quiz/QuizDetail.css */
+
+.quiz-detail-container {
+    /* On étire en hauteur pour pouvoir placer le bouton en bas */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .quiz-detail-header {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .quiz-header-logo {
+    max-width: 200px;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  /* Le bloc central prend toute la place disponible, 
+     poussant le bouton de retour en bas */
+  .quiz-detail-content {
+
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* centre horizontalement le quiz */
+  }
+  
+  .quiz-end-container {
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #1e1e2f;
+    color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+  }
+  
+  .btn-return-overview {
+    background-color: #7b2ff7;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-return-overview:hover {
+    background-color: #9b5ff7;
+  }
+  
+  /* Bouton de retour tout en bas, aligné à droite */
+  .back-button-container {
+    width: 100%;
+    text-align: center; /* aligné à gauche */
+    margin: 2rem 0 2rem 0;
+  }
+  
+  .back-button {
+    background-color: #444;
+  }
+  

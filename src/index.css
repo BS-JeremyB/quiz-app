@@ -1,0 +1,37 @@
+/* index.css */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Garder ton min-width: 320px si tu veux un minimum de largeur, 
+   mais pas le 'place-items:center' au niveau du body si tu veux remplir toute la page. */
+body {
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: #4158D0;
+  background-image: linear-gradient(135deg, #4158D0 27%, #C850C0 85%, #FFCC70 100%);
+  
+  /* supprime "display: flex; place-items: center;" */
+  /* Ou si tu tiens à un layout en flex, configure-le autrement. */
+}
+
+/* Ensuite #root peut prendre 100% de la page */
+#root {
+  width: 100%;
+  min-height: 100%;
+  /* éventuellement un padding ou un max-width, selon tes besoins */
+}
+.btn {
+  background-color: #444;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none; /* pour les <Link> stylés en bouton */
+  text-align: center;
+}

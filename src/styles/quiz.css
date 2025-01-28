@@ -1,0 +1,54 @@
+.quiz-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .quiz-card {
+    display: flex;
+    background: #1e1e1e;
+    border-radius: 10px;
+    width: 300px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+  
+  .quiz-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .quiz-card img {
+    width: 33%;
+    object-fit: cover;
+  }
+  
+  .quiz-card-content {
+    padding: 10px;
+    flex: 1;
+  }
+  
+  .quiz-card h3 {
+    margin: 0;
+    color: #ffffff;
+  }
+  
+  .difficulty {
+    font-size: 14px;
+    color: #ffcc00;
+  }
+  
+  .play-button {
+    display: inline-block;
+    background: #8a2be2;
+    color: white;
+    padding: 8px 12px;
+    margin-top: 10px;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  .play-button:hover {
+    background: #9c51ff;
+  }
+  

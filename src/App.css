@@ -9,8 +9,7 @@ html, body {
   font-family: sans-serif;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-color: #4158D0;
-  background-image: linear-gradient(135deg, #4158D0 27%, #C850C0 85%, #FFCC70 100%); /* pour pouvoir prendre toute la hauteur */
+  background-image: linear-gradient( 135deg, #844ef0 10%, #2f0192 100%);
 }
 
 /* #root est le conteneur principal créé par React. 

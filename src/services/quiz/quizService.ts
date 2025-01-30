@@ -1,4 +1,4 @@
-import { TQuiz } from "../types";
+import { TQuiz } from "../../types";
 
 const BASE_URL = 'http://i3-quiz.local/wp-json/wp/v2';
 

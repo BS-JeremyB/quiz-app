@@ -1,0 +1,138 @@
+/* src/components/Header.css */
+
+/* Retire toute marge/padding par défaut */
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+/* Le container principal du header */
+.header {
+    width: 100%;
+    background-color: #222; /* bannière noire */
+    position: relative;     /* pour positionner .header-right en absolu */
+    height: 100px;          /* hauteur du bandeau */
+    display: flex;
+    justify-content: center; /* centre le contenu horizontalement */
+    align-items: center;     /* centre verticalement */
+    overflow: visible;       /* autorise le débordement */
+    margin-bottom: 100px;
+}
+
+/* Le logo, qui déborde par le bas */
+.header-logo {
+    height: 250px;   /* Ajuste la taille pour la rendre plus grande */
+    width: auto;
+    position: absolute; /* Position absolue pour permettre le débordement */
+    bottom: -120px;     /* Positionne le logo au-dessous du bandeau */
+    z-index: 1; /* Assure que le logo est au-dessus du bandeau */
+}
+
+/* Boutons en haut à droite */
+.header-right {
+    position: absolute; /* se base sur la position: relative du header */
+    top: 1rem;          
+    right: 2rem;        
+    display: flex;
+    gap: 0.5rem; /* écart horizontal entre les 2 boutons */
+}
+
+/* On réutilise le style global des .btn 
+   ou on le recopie ici pour .header-button */
+.header-button {
+    background-color: #444;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.header-button:hover {
+    background-color: #666;
+}
+
+/* --- Modals --- */
+
+/* Sur toute la page */
+.modal-overlay {
+    position: fixed; /* pour recouvrir l'écran */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* passer au-dessus du header */
+}
+
+/* Fenêtre modale */
+.modal-content {
+    background: linear-gradient(135deg, #844ef0 10%, #2f0192 100%);
+    color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    position: relative;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+/* Bouton de fermeture "X" */
+.modal-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.8rem;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+.modal-close:hover {
+    color: #ddd;
+}
+
+/* Alignement des champs dans les formulaires (Login/Register) */
+.form-group {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    justify-self: end;
+    margin-right: 1rem;
+    font-weight: bold;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+}
+
+.form-button {
+    background-color: #444;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.form-button:hover {
+    background-color: #666;
+}

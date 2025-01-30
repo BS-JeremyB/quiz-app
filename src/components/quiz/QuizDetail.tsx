@@ -2,10 +2,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getQuizById } from '../../services/quizService';
+import { getQuizById } from '../../services/quiz/quizService';
 import { TQuiz } from '../../types';
 
-import quizLogo from '../../assets/quizz-logo.png';
 
 import QuizOverview from './QuizOverview';
 import QuizGame from './QuizGame';
@@ -18,6 +17,11 @@ const QuizDetail: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<'overview' | 'play' | 'end'>('overview');
   const [finalScore, setFinalScore] = useState<number | null>(null);
+
+  // AJOUT : on stocke le temps de départ (en ms, via Date.now())
+  const [startTime, setStartTime] = useState<number | null>(null);
+  // AJOUT : on stocke le temps final (ou la durée totale)
+  const [elapsedTime, setElapsedTime] = useState<number | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -39,14 +43,32 @@ const QuizDetail: React.FC = () => {
     return <p className="loading-message">Chargement...</p>;
   }
 
+  /**
+   * Au clic sur "Jouer", on passe en mode "play",
+   * on réinitialise finalScore, et on démarre le chrono.
+   */
   const handlePlay = () => {
     setMode('play');
     setFinalScore(null);
+    setElapsedTime(null);
+
+    // On enregistre le moment du départ (en ms)
+    setStartTime(Date.now());
   };
 
+  /**
+   * Quand le jeu est terminé, on récupère le score
+   * et on calcule le temps écoulé.
+   */
   const handleGameOver = (score: number) => {
     setFinalScore(score);
     setMode('end');
+
+    if (startTime) {
+      const endTime = Date.now();
+      const total = endTime - startTime; // en ms
+      setElapsedTime(total);
+    }
   };
 
   const totalQuestions = quiz.questions?.length || 0;
@@ -55,12 +77,14 @@ const QuizDetail: React.FC = () => {
       ? Math.round((finalScore / totalQuestions) * 100)
       : 0;
 
+  /**
+   * On convertit la durée en secondes.
+   * (1s = 1000ms). Par exemple, 4852 ms => ~4.85s
+   */
+  const elapsedSeconds = elapsedTime ? (elapsedTime / 1000).toFixed(2) : null;
+
   return (
     <div className="page-container quiz-detail-container">
-      {/* Logo centré en haut */}
-      <div className="quiz-detail-header">
-        <img src={quizLogo} alt="Quiz" className="quiz-header-logo" />
-      </div>
 
       {/* Contenu principal */}
       <div className="quiz-detail-content">
@@ -79,6 +103,12 @@ const QuizDetail: React.FC = () => {
               Vous avez {finalScore} bonne(s) réponse(s) sur {totalQuestions}.
             </p>
             <p>Score final : {percentage}%</p>
+
+            {/* AJOUT : affichage du temps total (en secondes) */}
+            {elapsedSeconds && (
+              <p>Temps total : {elapsedSeconds} secondes</p>
+            )}
+
             <button
               onClick={() => setMode('overview')}
               className="btn btn-return-overview"

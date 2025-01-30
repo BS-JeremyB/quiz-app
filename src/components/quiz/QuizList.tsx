@@ -2,11 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getAllQuizzes } from '../../services/quizService';
+import { getAllQuizzes } from '../../services/quiz/quizService';
 import { TQuiz } from '../../types';
 
-import quizLogo from '../../assets/quizz-logo.png'; // adapte le chemin si nécessaire
+
 import './QuizList.css';
+
 
 const QuizList: React.FC = () => {
   const [quizzes, setQuizzes] = useState<TQuiz[]>([]);
@@ -29,11 +30,6 @@ const QuizList: React.FC = () => {
 
   return (
     <div className="page-container quiz-list-page">
-      {/* Logo centré en haut */}
-      <div className="quiz-list-header">
-        <img src={quizLogo} alt="Quiz Logo" className="quiz-list-logo" />
-      </div>
-
       <h1 className="quiz-list-title">Tous les Quiz</h1>
 
       <div className="quiz-cards-container">

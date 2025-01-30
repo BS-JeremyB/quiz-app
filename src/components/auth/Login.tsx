@@ -29,7 +29,7 @@ const Login = () => {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="username">Nom d'utilisateur :</label>
+          <label htmlFor="username">Nom d'utilisateur :</label><br/>
           <input
             id="username"
             type="text"
@@ -39,7 +39,7 @@ const Login = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="password">Mot de passe :</label>
+          <label htmlFor="password">Mot de passe :</label><br/>
           <input
             id="password"
             type="password"

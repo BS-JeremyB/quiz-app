@@ -17,4 +17,6 @@ export type TScoreboard = {
     // Autres potentiels
     [key: string]: any;
   };
+
+
   

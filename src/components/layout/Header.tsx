@@ -1,6 +1,6 @@
 // src/components/Header.tsx
 import React, { useState } from 'react';
-import logo from '../../assets/quizz-logo.png';
+import logo from '/quizz-logo.png';
 import './Header.css';
 
 // Exemple : tu peux importer tes composants Login/Register

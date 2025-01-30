@@ -32,7 +32,7 @@ const Register = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="username">Nom d'utilisateur :</label>
+          <label htmlFor="username">Nom d'utilisateur :</label><br />
           <input
             id="username"
             type="text"
@@ -43,7 +43,7 @@ const Register = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="email">Adresse e-mail :</label>
+          <label htmlFor="email">Adresse e-mail :</label><br />
           <input
             id="email"
             type="email"

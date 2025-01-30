@@ -1,13 +1,14 @@
 // src/components/quiz/QuizDetail.tsx
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getQuizById } from '../../services/quiz/quizService';
 import { TQuiz } from '../../types';
 
-
 import QuizOverview from './QuizOverview';
 import QuizGame from './QuizGame';
+import { postScoreboard } from '../../services/quiz/scoreboardService';
+import { fetchCurrentUser } from '../../services/auth/authService'; // <-- import service
 
 import './QuizDetail.css';
 
@@ -15,13 +16,19 @@ const QuizDetail: React.FC = () => {
   const { id } = useParams();
   const [quiz, setQuiz] = useState<TQuiz | null>(null);
   const [error, setError] = useState<string | null>(null);
+
   const [mode, setMode] = useState<'overview' | 'play' | 'end'>('overview');
   const [finalScore, setFinalScore] = useState<number | null>(null);
 
-  // AJOUT : on stocke le temps de départ (en ms, via Date.now())
+  // Timer
   const [startTime, setStartTime] = useState<number | null>(null);
-  // AJOUT : on stocke le temps final (ou la durée totale)
   const [elapsedTime, setElapsedTime] = useState<number | null>(null);
+
+  // ID de l'utilisateur courant (ou null s'il n'est pas connecté)
+  const [userId, setUserId] = useState<number | null>(null);
+
+  // Ref pour scroller
+  const quizGameRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -36,6 +43,21 @@ const QuizDetail: React.FC = () => {
     })();
   }, [id]);
 
+  // On récupère l'utilisateur côté service
+  useEffect(() => {
+    (async () => {
+      const user = await fetchCurrentUser();
+      setUserId(user ? user.id : null);
+    })();
+  }, []);
+
+  // Scroll vers quizGameRef quand on passe en mode play
+  useEffect(() => {
+    if (mode === 'play' && quizGameRef.current) {
+      quizGameRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [mode]);
+
   if (error) {
     return <p className="error-message">Erreur : {error}</p>;
   }
@@ -43,31 +65,35 @@ const QuizDetail: React.FC = () => {
     return <p className="loading-message">Chargement...</p>;
   }
 
-  /**
-   * Au clic sur "Jouer", on passe en mode "play",
-   * on réinitialise finalScore, et on démarre le chrono.
-   */
   const handlePlay = () => {
     setMode('play');
     setFinalScore(null);
     setElapsedTime(null);
-
-    // On enregistre le moment du départ (en ms)
     setStartTime(Date.now());
   };
 
-  /**
-   * Quand le jeu est terminé, on récupère le score
-   * et on calcule le temps écoulé.
-   */
-  const handleGameOver = (score: number) => {
+  const handleGameOver = async (score: number) => {
     setFinalScore(score);
     setMode('end');
 
+    // On calcule le temps
     if (startTime) {
       const endTime = Date.now();
-      const total = endTime - startTime; // en ms
-      setElapsedTime(total);
+      const totalMs = endTime - startTime; 
+      setElapsedTime(totalMs);
+
+      // Poster le scoreboard si connecté
+      if (userId) {
+        const nbQuestions = quiz.questions?.length ?? 0;
+        const scorePercent = nbQuestions > 0 ? Math.round((score / nbQuestions) * 100) : 0;
+
+        try {
+          const createdScoreboard = await postScoreboard(quiz.id, userId, scorePercent, totalMs);
+          console.log('Scoreboard créé :', createdScoreboard);
+        } catch (err) {
+          console.error('Erreur creation scoreboard:', err);
+        }
+      }
     }
   };
 
@@ -77,23 +103,20 @@ const QuizDetail: React.FC = () => {
       ? Math.round((finalScore / totalQuestions) * 100)
       : 0;
 
-  /**
-   * On convertit la durée en secondes.
-   * (1s = 1000ms). Par exemple, 4852 ms => ~4.85s
-   */
   const elapsedSeconds = elapsedTime ? (elapsedTime / 1000).toFixed(2) : null;
 
   return (
     <div className="page-container quiz-detail-container">
 
-      {/* Contenu principal */}
       <div className="quiz-detail-content">
         {mode === 'overview' && (
           <QuizOverview quiz={quiz} onPlay={handlePlay} />
         )}
 
         {mode === 'play' && quiz.questions && quiz.questions.length > 0 && (
-          <QuizGame questions={quiz.questions} onGameOver={handleGameOver} />
+          <div ref={quizGameRef}>
+            <QuizGame questions={quiz.questions} onGameOver={handleGameOver} />
+          </div>
         )}
 
         {mode === 'end' && (
@@ -103,11 +126,7 @@ const QuizDetail: React.FC = () => {
               Vous avez {finalScore} bonne(s) réponse(s) sur {totalQuestions}.
             </p>
             <p>Score final : {percentage}%</p>
-
-            {/* AJOUT : affichage du temps total (en secondes) */}
-            {elapsedSeconds && (
-              <p>Temps total : {elapsedSeconds} secondes</p>
-            )}
+            {elapsedSeconds && <p>Temps total : {elapsedSeconds} secondes</p>}
 
             <button
               onClick={() => setMode('overview')}
@@ -119,7 +138,6 @@ const QuizDetail: React.FC = () => {
         )}
       </div>
 
-      {/* Bouton de retour en bas, à droite */}
       <div className="back-button-container">
         <Link to="/" className="btn back-button">
           Retour à la liste

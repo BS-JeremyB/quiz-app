@@ -66,3 +66,38 @@ export async function registerUser(username: string, email: string): Promise<boo
     }
   }
   
+// src/services/authService.ts
+
+/**
+ * Retourne l'utilisateur courant (ID + nom), ou null s'il n'est pas logué.
+ */
+export async function fetchCurrentUser(): Promise<{id: number; name: string} | null> {
+    try {
+      const { wpApiSettings } = window as any;
+      if (!wpApiSettings?.root) {
+        console.error('wpApiSettings.root est introuvable.');
+        return null;
+      }
+  
+      const resp = await fetch(`${wpApiSettings.root}wp/v2/users/me`, {
+        credentials: 'include',
+        headers: {
+          'X-WP-Nonce': wpApiSettings.nonce
+        }
+      });
+  
+      if (!resp.ok) {
+        console.error('GET /users/me =>', resp.status, await resp.text());
+        return null;
+      }
+  
+      const data = await resp.json();
+      // data = { id: 1, name: "admin", ... }
+      return { id: data.id, name: data.name };
+    } catch (err) {
+      console.error('Erreur fetchCurrentUser:', err);
+      return null;
+    }
+  }
+  
+  

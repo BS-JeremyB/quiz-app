@@ -78,7 +78,7 @@ html, body {
     padding: 2rem;
     border-radius: 8px;
     position: relative;
-    width: 400px;
+    width: 600px;
     max-width: 90%;
     box-shadow: 0 0 10px rgba(0,0,0,0.3);
 }
@@ -103,14 +103,14 @@ html, body {
 /* Alignement des champs dans les formulaires (Login/Register) */
 .form-group {
     display: grid;
-    grid-template-columns: 120px 1fr;
+    grid-template-columns:  1fr;
     align-items: center;
     margin-bottom: 1rem;
 }
 
 .form-group label {
-    justify-self: end;
-    margin-right: 1rem;
+    justify-self: start;
+    margin-right: 2rem;
     font-weight: bold;
 }
 
